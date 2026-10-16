@@ -663,7 +663,7 @@
   function loop(){
     rafId = null;
     if(!pointer.inside){ return; }
-    var active = (Date.now() - pointer.lastMove) < IDLE;
+    var active = true;
     if(active){
       lines.forEach(function(L){
         var rect = L.pre.getBoundingClientRect();
