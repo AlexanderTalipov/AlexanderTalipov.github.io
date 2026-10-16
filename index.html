@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alexander Talipov — Architect · Entrepreneur</title>
+<meta name="description" content="Alexander Talipov — architect and entrepreneur. Columbia University. $60K AI-driven product launch, AI-assisted architecture, founder of Horizon.">
+<link href="fonts/local.css" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0a0a; --ink:#f5f5f4; --mut:#9a9a9a; --dim:#5c5c5c; --line:#232323; --card:#111111;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+
+  /* ---------- nav ---------- */
+  nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;
+      padding:18px 28px;border-bottom:1px solid var(--line);background:rgba(10,10,10,.86);backdrop-filter:blur(10px)}
+  .brand{font-weight:800;font-size:14px;letter-spacing:.08em;white-space:nowrap}
+  .brand span{color:var(--mut);font-weight:500}
+  .tabs{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+  .tabs::-webkit-scrollbar{display:none}
+  .tabs button{background:none;border:0;color:var(--mut);font-family:inherit;font-size:11px;font-weight:600;
+      letter-spacing:.14em;padding:8px 12px;cursor:pointer;white-space:nowrap;transition:color .15s}
+  .tabs button:hover{color:var(--ink)}
+  .tabs button.on{color:var(--ink)}
+
+  /* ---------- pages ---------- */
+  main{padding-top:57px;min-height:100vh}
+  .page{display:none;animation:in .35s ease}
+  .page.on{display:block}
+  @keyframes in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  .wrap{max-width:1120px;margin:0 auto;padding:64px 28px 96px}
+
+  /* ---------- hero ---------- */
+  .hero{min-height:calc(100vh - 57px);display:flex;flex-direction:column;justify-content:center;padding:80px 28px;max-width:1280px;margin:0 auto}
+  .pill{display:inline-block;border:1px solid var(--line);border-radius:999px;color:var(--mut);
+      font-size:11px;font-weight:600;letter-spacing:.18em;padding:7px 14px;margin-bottom:34px;align-self:flex-start}
+  h1{line-height:1}
+  .ascii-line{font-family:ui-monospace,'Cascadia Mono','JetBrains Mono',Consolas,Menlo,monospace;
+      font-size:min(1.35vw,14.5px);line-height:1.02;white-space:pre;user-select:none;cursor:crosshair}
+  .ascii-line + .ascii-line{margin-top:1.1em}
+  .ascii-line.l2{color:var(--mut)}
+  .ascii-line pre{margin:0;font:inherit}
+  @media(max-height:820px){.ascii-line{font-size:min(1.2vw,12.5px)}}
+  .sub{margin-top:30px;font-size:clamp(15px,2.2vw,21px);font-weight:500;color:var(--mut);letter-spacing:.01em}
+  .sub b{color:var(--ink);font-weight:600}
+  .hero-links{margin-top:44px;display:flex;gap:28px;flex-wrap:wrap}
+  .hlink{font-size:14px;font-weight:600;border-bottom:1px solid #3a3a3a;padding-bottom:4px;transition:border-color .15s}
+  .hlink:hover{border-color:var(--ink)}
+
+  /* ---------- shared ---------- */
+  h2{font-size:clamp(30px,5vw,54px);font-weight:800;letter-spacing:-.03em;line-height:1.05;margin-bottom:14px}
+  .lead{color:var(--mut);font-size:16px;line-height:1.65;max-width:760px}
+  .sect{margin-top:64px}
+  .sect h3{font-size:12px;font-weight:700;letter-spacing:.18em;color:var(--dim);text-transform:uppercase;
+      margin-bottom:22px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+
+  /* stat row */
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:var(--line);
+      border:1px solid var(--line);margin-top:44px}
+  .stat{background:var(--bg);padding:26px 22px}
+  .stat .n{font-size:clamp(28px,4vw,42px);font-weight:800;letter-spacing:-.03em}
+  .stat .t{margin-top:8px;color:var(--mut);font-size:12.5px;line-height:1.45}
+
+  /* info rows */
+  .rows{border-top:1px solid var(--line)}
+  .row{display:grid;grid-template-columns:170px 1fr;gap:20px;padding:16px 0;border-bottom:1px solid var(--line);font-size:14px}
+  .row .k{color:var(--dim);font-weight:600;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;padding-top:2px}
+  .row .v{color:var(--ink);line-height:1.6}
+  .row .v .muted{color:var(--mut)}
+
+  /* built cards */
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+  .card{background:var(--card);border:1px solid var(--line);padding:24px;transition:border-color .15s}
+  .card:hover{border-color:#3a3a3a}
+  .card .tag{font-size:10.5px;font-weight:700;letter-spacing:.16em;color:var(--dim);text-transform:uppercase}
+  .card h4{margin:10px 0 10px;font-size:19px;font-weight:700;letter-spacing:-.01em}
+  .card p{color:var(--mut);font-size:13.5px;line-height:1.6}
+  .card .num{margin-top:14px;font-weight:800;font-size:15px}
+
+  /* experience / education entries */
+  .entry{display:grid;grid-template-columns:200px 1fr;gap:24px;padding:30px 0;border-bottom:1px solid var(--line)}
+  .entry:first-of-type{border-top:1px solid var(--line)}
+  .when{color:var(--dim);font-size:12px;font-weight:600;letter-spacing:.06em;line-height:1.7;padding-top:4px}
+  .entry h4{font-size:20px;font-weight:700;letter-spacing:-.01em}
+  .entry .where{color:var(--mut);font-size:13.5px;margin-top:5px;margin-bottom:14px}
+  .entry ul{list-style:none}
+  .entry li{color:#c9c9c9;font-size:14px;line-height:1.6;padding-left:18px;position:relative;margin-bottom:9px}
+  .entry li::before{content:"";position:absolute;left:0;top:9px;width:6px;height:6px;background:#3d3d3d}
+  .entry li b{color:var(--ink);font-weight:600}
+
+  /* activities list */
+  .act{display:grid;grid-template-columns:120px 1fr;gap:18px;padding:14px 0;border-bottom:1px solid var(--line);font-size:14px}
+  .act .y{color:var(--dim);font-size:12px;font-weight:600;padding-top:2px}
+  .act .t{line-height:1.55}
+  .act .t b{font-weight:600}
+  .act .t span{color:var(--mut)}
+
+  /* chips */
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{border:1px solid var(--line);border-radius:999px;padding:7px 14px;font-size:12.5px;color:#c9c9c9}
+
+  /* portfolio */
+  .pf-top{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-bottom:28px}
+  .dl{display:inline-block;border:1px solid #3a3a3a;padding:11px 20px;font-size:12.5px;font-weight:600;letter-spacing:.04em;transition:.15s}
+  .dl:hover{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+  .viewer{position:relative;border:1px solid var(--line);background:#000;height:min(76vh,860px)}
+  .viewer .pf{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:0}
+  .viewer .pf.on{opacity:1}
+  .arrows{position:absolute;top:0;bottom:0;width:33%;display:flex;align-items:center;cursor:pointer;user-select:none}
+  .arrows.prev{left:0;justify-content:flex-start;padding-left:14px}
+  .arrows.next{right:0;justify-content:flex-end;padding-right:14px}
+  .arrows span{font-size:26px;color:#fff;background:rgba(10,10,10,.6);border:1px solid #333;border-radius:50%;
+      width:44px;height:44px;display:flex;align-items:center;justify-content:center;transition:.15s}
+  .arrows:hover span{background:#fff;color:#000}
+  .pf-bar{display:flex;justify-content:space-between;align-items:center;padding:14px 2px 0;font-size:12px;color:var(--dim);letter-spacing:.08em}
+  .pf-hint{color:var(--dim)}
+  .fs{cursor:pointer;background:none;border:1px solid #3a3a3a;border-radius:4px;color:var(--dim);
+      padding:5px 12px;font-family:inherit;font-size:11px;font-weight:600;letter-spacing:.1em;transition:.15s}
+  .fs:hover{color:var(--ink);border-color:var(--ink)}
+  .viewer:fullscreen{border:0}
+  .viewer:fullscreen .pf{opacity:1}
+  body.lock{overflow:hidden}
+  .viewer.pfs{position:fixed;inset:0;z-index:200;border:0;background:#000}
+  .viewer.pfs .pf{opacity:1}
+
+  /* contact */
+  .cl{display:block;font-size:clamp(22px,4.5vw,44px);font-weight:800;letter-spacing:-.02em;line-height:1.25;
+      border-bottom:1px solid var(--line);padding:22px 0;transition:.15s}
+  .cl small{display:block;font-size:12px;font-weight:600;color:var(--dim);letter-spacing:.14em;margin-bottom:8px}
+  .cl:hover{color:var(--mut);padding-left:10px}
+
+  footer{border-top:1px solid var(--line);padding:26px 28px;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;
+      color:var(--dim);font-size:12px;letter-spacing:.06em}
+
+  @media(max-width:720px){
+    .row,.entry{grid-template-columns:1fr;gap:8px}
+    .when{margin-bottom:4px}
+    .act{grid-template-columns:1fr;gap:4px}
+    .wrap{padding:44px 20px 72px}
+    .hero{padding:60px 20px}
+    nav{padding:14px 16px}
+    .brand span{display:none}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="brand">AT&nbsp;&nbsp;<span>// ALEXANDER TALIPOV</span></div>
+  <div class="tabs" id="tabs">
+    <button data-p="home" class="on">HOME</button>
+    <button data-p="about">ABOUT</button>
+    <button data-p="experience">EXPERIENCE</button>
+    <button data-p="education">EDUCATION</button>
+    <button data-p="activities">ACTIVITIES</button>
+    <button data-p="portfolio">PORTFOLIO</button>
+    <button data-p="contact">CONTACT</button>
+  </div>
+</nav>
+
+<main>
+
+<!-- ================= HOME ================= -->
+<section class="page on" id="p-home">
+  <div class="hero">
+    <div class="pill">YC STARTUP SCHOOL — TAIPEI 2026 · APPLICANT</div>
+    <h1 id="heroName"><div class="ascii-line" data-word="Alexander"></div><div class="ascii-line l2" data-word="Talipov"></div></h1>
+    <div class="sub">Architect · Entrepreneur · <b>Columbia University Student</b></div>
+    <div class="hero-links">
+      <a class="hlink" href="#portfolio">View the portfolio →</a>
+      <a class="hlink" href="#about">About me →</a>
+      <a class="hlink" href="#contact">Get in touch →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ABOUT ================= -->
+<section class="page" id="p-about">
+  <div class="wrap">
+    <h2>About me</h2>
+    <p class="lead">Architect and entrepreneur with 4+ years across design practice, tech and business.
+      I design with AI-native workflows, monetize creator audiences, and build communities that turn
+      architects into architect-entrepreneurs. Admitted to three Ivy League universities by building my
+      own AI-powered application process — and I apply the same playbook to everything I build.</p>
+
+    <div class="stats">
+      <div class="stat"><div class="n">3</div><div class="t">Ivy League admissions — Columbia, Cornell, UPenn</div></div>
+      <div class="stat"><div class="n">$60.5K</div><div class="t">launch revenue from a China furniture-sourcing tour, 22 sales closed personally</div></div>
+      <div class="stat"><div class="n">1M+ sq ft</div><div class="t">of designed educational and professional projects</div></div>
+      <div class="stat"><div class="n">12+</div><div class="t">international workshops and global competitions</div></div>
+    </div>
+
+    <div class="sect">
+      <h3>What I've built</h3>
+      <div class="cards">
+        <div class="card">
+          <div class="tag">Product launch</div>
+          <h4>China Furniture-Sourcing Tour</h4>
+          <p>Co-led the launch with creator Anna Aksenova (167K Instagram). Won the partnership through
+             2-3 touch outreach to 120 creators; a 5-story warm-up sequence brought ~100 leads in a day;
+             200+ sales calls, full on-site operations in China.</p>
+          <div class="num">$60.5K revenue · $20.5K net profit</div>
+        </div>
+        <div class="card">
+          <div class="tag">AI + architecture</div>
+          <h4>Theater Quarter</h4>
+          <p>Theater-centered urban quarter for my Ivy League applications. Built an AI workflow around
+             Rhino 3D — Claude for concept reasoning, Krea and Blender for real-time form-finding,
+             TestFit and Forma for massing iteration.</p>
+          <div class="num">3× faster concept development</div>
+        </div>
+        <div class="card">
+          <div class="tag">AI + documentation</div>
+          <h4>Microchip Quarter</h4>
+          <p>Full construction documentation for an architectural project, integrating Claude, ChatGPT,
+             Swapp AI, Veras, PromeAI, Maket and PlanFinder into research, detailing and sheet production.</p>
+          <div class="num">3 months of work in 3 weeks — 4× faster</div>
+        </div>
+        <div class="card">
+          <div class="tag">Community</div>
+          <h4>Horizon</h4>
+          <p>Community connecting architecture students with industry professionals — workshops on
+             economics, AI agents and vibe coding, backed by Level Group after two months of outreach
+             to 10+ leading developers.</p>
+          <div class="num">Supported by top Russian developer</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sect">
+      <h3>How I hacked the system</h3>
+      <div class="rows">
+        <div class="row"><div class="k">The goal</div><div class="v">US master's programs from Moscow — no network, no $25-50K admissions consultant budget.</div></div>
+        <div class="row"><div class="k">The move</div><div class="v">Built the whole application process myself with Claude and ChatGPT; negotiated an 85% mentor
+          discount by connecting over Paul Graham's essays and startups.</div></div>
+        <div class="row"><div class="k">The result</div><div class="v">Admitted to Columbia, Cornell and UPenn for <b>$4.2K total</b> — instead of the quoted ₽2-5M.</div></div>
+      </div>
+    </div>
+
+    <div class="sect">
+      <h3>Personal info</h3>
+      <div class="rows">
+        <div class="row"><div class="k">Based in</div><div class="v">Moscow, Russia</div></div>
+        <div class="row"><div class="k">Languages</div><div class="v">English B2-C1 <span class="muted">(TOEFL 91 · Duolingo 125)</span>, Russian native</div></div>
+        <div class="row"><div class="k">Interests</div><div class="v">Architectural travel — 16 countries in Europe and Asia, including Japan, South Korea and Hong Kong</div></div>
+      </div>
+    </div>
+
+    <div class="sect">
+      <h3>Tools &amp; skills</h3>
+      <div class="chips">
+        <div class="chip">Rhino 3D</div><div class="chip">Grasshopper</div><div class="chip">V-Ray</div><div class="chip">AutoCAD</div>
+        <div class="chip">Revit</div><div class="chip">SketchUp</div><div class="chip">Blender</div><div class="chip">TestFit</div>
+        <div class="chip">Photoshop</div><div class="chip">Illustrator</div><div class="chip">InDesign</div>
+        <div class="chip">Python</div><div class="chip">C#</div><div class="chip">3D-Printing</div><div class="chip">Laser Cutting</div>
+        <div class="chip">Model-making</div><div class="chip">Claude</div><div class="chip">ChatGPT</div><div class="chip">Krea AI</div>
+        <div class="chip">LookX</div><div class="chip">Veras</div><div class="chip">PromeAI</div><div class="chip">Swapp AI</div>
+        <div class="chip">Maket</div><div class="chip">PlanFinder</div><div class="chip">Autodesk Forma</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= EXPERIENCE ================= -->
+<section class="page" id="p-experience">
+  <div class="wrap">
+    <h2>Work experience</h2>
+    <p class="lead">From architectural bureaus to my own ventures — one thread throughout: using AI to
+      move an order of magnitude faster, and building things that connect people.</p>
+
+    <div class="sect">
+      <h3>Entrepreneurship</h3>
+      <div class="entry">
+        <div class="when">MAY 2026 —<br>PRESENT</div>
+        <div>
+          <h4>Individual Entrepreneur</h4>
+          <div class="where">Self-employed · Moscow / Taipei</div>
+          <ul>
+            <li>Monetize creators' social media audiences — turning content engagement into revenue through marketing, sales funnels and direct sales.</li>
+            <li>Partnered with entrepreneur Anna Aksenova to launch a China furniture-sourcing tour: <b>$60.5K revenue, $20.5K net profit</b>, 25 customers brought to China.</li>
+            <li>Won the creator partnership (167K followers) through personal outreach to 120 bloggers, 2-3 messages each, leading all negotiations myself.</li>
+            <li>Designed a warm-up Stories sequence: <b>~100 inbound leads in 24 hours</b> from just 5 stories; 200+ sales calls, 22 sales closed at ~$2,750 each.</li>
+            <li>Built relationships with high-net-worth clients — including the billionaire owner of a leading Chinese furniture manufacturing company.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="entry">
+        <div class="when">SEP 2024 —<br>JUN 2026</div>
+        <div>
+          <h4>Founder of Horizon</h4>
+          <div class="where">Community for architect-entrepreneurs · Moscow</div>
+          <ul>
+            <li>Founded a platform connecting architecture, economics and engineering students with industry professionals.</li>
+            <li>Secured support from Level Group's leadership after 2+ months of outreach to 10+ leading real estate developers.</li>
+            <li>Ran workshops on economics, AI agents and vibe coding for architects, designers and urban planners; built the community website.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="sect">
+      <h3>Architecture</h3>
+      <div class="entry">
+        <div class="when">SEP 2024 —<br>AUG 2026</div>
+        <div>
+          <h4>Architectural Designer</h4>
+          <div class="where">Meganom — top Russian bureau, core project: "262 Fifth" tower in Manhattan · Moscow</div>
+          <ul>
+            <li>3D-modeled a village on Elena Island, Vladivostok in SketchUp and Rhino — scene structure, key objects, infrastructure planning.</li>
+            <li>Created the estate masterplan in Adobe Illustrator: layouts, infographics, presentation materials.</li>
+            <li>Integrated <b>Claude with Rhino and Revit</b> to automate modeling, documentation and visualization — tasks completed <b>2-3× faster</b>.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="entry">
+        <div class="when">SEP 2024 —<br>JUN 2026</div>
+        <div>
+          <h4>Architectural Designer &amp; Ambassador</h4>
+          <div class="where">Level Group — best Russian developer (Forbes 2025) · Moscow</div>
+          <ul>
+            <li>Produced construction documentation — drawings, details, joints, structural assemblies — with AI-accelerated workflows.</li>
+            <li>Led the redevelopment concept for an industrial site into a mixed-use residential and cultural space, guiding student teams through feasibility, regulation and concept.</li>
+            <li>Organized expert-led courses on AI-native architectural practice: vibe coding, AI agents, AI in design and business operations.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="entry">
+        <div class="when">JUN 2022 —<br>AUG 2024</div>
+        <div>
+          <h4>Architectural Designer</h4>
+          <div class="where">APEX project bureau — best Russian bureau (Urban Awards 2025) · Moscow</div>
+          <ul>
+            <li>International competition entry adapting a historic ruin in Sicily — awarded <b>"Golden Mention"</b>.</li>
+            <li>Developed environmental and spatial design for a museum storage and exhibition complex in Kommunarka, Moscow.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="sect">
+      <h3>Education business</h3>
+      <div class="entry">
+        <div class="when">MAR 2026 —<br>PRESENT</div>
+        <div>
+          <h4>Admissions Mentor</h4>
+          <div class="where">Global Generation LLC · Remote</div>
+          <ul>
+            <li>Mentor 10+ students applying to Bachelor's, Master's and PhD programs in the US, Europe and Asia — research, essays, CV, extracurricular and portfolio strategy, all accelerated with AI tools.</li>
+            <li>Produced 12+ educational videos on university admissions for the company's YouTube channel, with AI-powered research and scripting.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= EDUCATION ================= -->
+<section class="page" id="p-education">
+  <div class="wrap">
+    <h2>Education</h2>
+    <p class="lead">Admitted to three Ivy League master's programs — enrolling at Columbia, with the rest of the story still being written in Moscow.</p>
+
+    <div class="sect">
+      <h3>Degrees</h3>
+      <div class="entry">
+        <div class="when">MAY 2027 —<br>MAY 2028</div>
+        <div>
+          <h4>Columbia University</h4>
+          <div class="where">New York, USA · Master of Science, Advanced Architectural Design</div>
+          <ul><li>Also admitted to <b>Cornell University</b> and the <b>University of Pennsylvania</b> — took a one-year deferment.</li></ul>
+        </div>
+      </div>
+      <div class="entry">
+        <div class="when">SEP 2021 —<br>AUG 2026</div>
+        <div>
+          <h4>Moscow Architectural Institute</h4>
+          <div class="where">State Academy — Russia's #1 architectural school · Bachelor of Architecture</div>
+          <ul><li>Student at the "TLP" architectural bureau studio — best Russian bureau (Forbes 2023).</li></ul>
+        </div>
+      </div>
+      <div class="entry">
+        <div class="when">SEP 2015 —<br>AUG 2020</div>
+        <div>
+          <h4>Krasnogorsk Art School</h4>
+          <div class="where">Moscow region · Pre-bachelor professional degree</div>
+          <ul><li>Full scholarship from the Moscow region government.</li></ul>
+        </div>
+      </div>
+      <div class="entry">
+        <div class="when">SEP 2015 —<br>AUG 2021</div>
+        <div>
+          <h4>Moscow Lyceum №1564</h4>
+          <div class="where">Senior and high school · STEM track</div>
+          <ul><li>Physics, Math and IT emphasis; national STEM Olympiads; school Robotics club.</li></ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="sect">
+      <h3>Certifications</h3>
+      <div class="rows">
+        <div class="row"><div class="k">2024</div><div class="v">MIT — "Becoming an Entrepreneur" (LaunchX, online)</div></div>
+        <div class="row"><div class="k">2023</div><div class="v">Stanford University — "Principles of Economics" (online)</div></div>
+        <div class="row"><div class="k">2023</div><div class="v">"IT Technologies Plus" — Mechatronics and Robotics (online)</div></div>
+        <div class="row"><div class="k">2019</div><div class="v">Harvard University — "The Architectural Imagination" (online)</div></div>
+      </div>
+    </div>
+
+    <div class="sect">
+      <h3>Test scores</h3>
+      <div class="rows">
+        <div class="row"><div class="k">Math</div><div class="v">Russian State Advanced Math Exam — <b>100/100</b></div></div>
+        <div class="row"><div class="k">English</div><div class="v">TOEFL 91 · Duolingo 125</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ACTIVITIES ================= -->
+<section class="page" id="p-activities">
+  <div class="wrap">
+    <h2>Activities</h2>
+    <p class="lead">Competitions, workshops, public lectures, research and clubs — the extracurricular record behind the degree.</p>
+
+    <div class="sect">
+      <h3>Startup community</h3>
+      <div class="act">
+        <div class="y">2026 — NOW</div>
+        <div class="t"><b>Anastasia Denisova's Startup Community</b><br>
+          <span>Founder-focused community led by Anastasia Denisova (Forbes 30 Under 30 MENA): startup case studies,
+          fundraising strategy, venture capital — following her live $3M raise for the AI startup Aicelerate.</span></div>
+      </div>
+    </div>
+
+    <div class="sect">
+      <h3>Competitions &amp; workshops</h3>
+      <div class="act"><div class="y">2025</div><div class="t"><b>National Student Competition "Landscaping"</b> <span>— designed a park in Mtsensk with economics and urban-planning students from HSE</span></div></div>
+      <div class="act"><div class="y">2024</div><div class="t"><b>National Urban Hackathon "Cities"</b> <span>— finalist, top 5%: cultural heritage trail in Yeniseysk, Siberia, with parametric modeling and 3D visualization</span></div></div>
+      <div class="act"><div class="y">2024</div><div class="t"><b>"Decoding The Black Box"</b> <span>— top-5 result: advanced Grasshopper workshop, genetic algorithms (Galapagos, Wallacei), multi-objective optimization</span></div></div>
+      <div class="act"><div class="y">2024</div><div class="t"><b>"Exploring Creativity with Generative AI"</b> <span>— top-10 result: prompt engineering, storytelling, image libraries, AI ethics in architecture</span></div></div>
+      <div class="act"><div class="y">2023</div><div class="t"><b>"200 Boards" workshop by Meganom</b> <span>— top 7%: built an eco-friendly wooden pavilion at Nikola-Lenivets art park</span></div></div>
+      <div class="act"><div class="y">2023</div><div class="t"><b>NUWAO international design competition</b> <span>— ecological pavilion for Oceania: supporting local communities, cleaning islands by 2050</span></div></div>
+      <div class="act"><div class="y">2022</div><div class="t"><b>"A House for Jimi Hendrix"</b> <span>— international competition, London: house-theater blending Roman theater, school and home typologies</span></div></div>
+      <div class="act"><div class="y">2022</div><div class="t"><b>"Masterplan" urban workshop</b> <span>— top 10%: masterplan for a club territory on Goncharny Lane, Moscow</span></div></div>
+    </div>
+
+    <div class="sect">
+      <h3>Public lectures &amp; exhibitions</h3>
+      <div class="act"><div class="y">OCT 2025</div><div class="t"><b>"Claire Fountaine Museum"</b> <span>— lecturer and exhibitor, Zotov Cultural Center, Moscow · 220 attendees</span></div></div>
+      <div class="act"><div class="y">APR 2025</div><div class="t"><b>"Grid Village" project</b> <span>— lecturer and exhibitor, Zotov Cultural Center · 200+ attendees</span></div></div>
+      <div class="act"><div class="y">MAY 2024</div><div class="t"><b>"Theater Quarter"</b> <span>— lecturer and exhibitor, TLP bureau office · 170+ attendees</span></div></div>
+      <div class="act"><div class="y">FEB 2023</div><div class="t"><b>"Level Up Club"</b> <span>— lecturer and exhibitor, Moscow Architectural Institute · 150+ attendees</span></div></div>
+    </div>
+
+    <div class="sect">
+      <h3>Research &amp; articles</h3>
+      <div class="act"><div class="y">2025</div><div class="t"><b>"Metaphors of Machine and Organism in Contemporary Architectural Concepts"</b></div></div>
+      <div class="act"><div class="y">2025</div><div class="t"><b>"3D-Printing and Prototyping in Architectural Practice"</b></div></div>
+      <div class="act"><div class="y">2025</div><div class="t"><b>"Design Methods of Increasing Economic Value of Architecture"</b> <span>— article for Level Group with HSE students</span></div></div>
+      <div class="act"><div class="y">2025</div><div class="t"><b>"Exploration of Fortresses from the Time of Peter the Great"</b></div></div>
+      <div class="act"><div class="y">2024</div><div class="t"><b>"Robotics Industry: Its Birth and Main Stages"</b> <span>— foundation for the "Microchip Quarter" project</span></div></div>
+      <div class="act"><div class="y">2023</div><div class="t"><b>"Archigram and Metabolism in the 21st Century"</b></div></div>
+      <div class="act"><div class="y">2023</div><div class="t"><b>"Comparison of Japanese Traditional Housing with 1920s-1940s Japanese Architecture"</b></div></div>
+      <div class="act"><div class="y">2023</div><div class="t"><b>"Typologies of Russian Water Towers"</b></div></div>
+    </div>
+
+    <div class="sect">
+      <h3>Academic clubs</h3>
+      <div class="act"><div class="y">2023—26</div><div class="t"><b>Reading club at TLP bureau</b> <span>— weekly society: Eisenman, Foucault, Frei Otto, Colin Rowe; led discussions and proposed readings</span></div></div>
+      <div class="act"><div class="y">2023—24</div><div class="t"><b>Student architectural club</b> <span>— Koolhaas's "Generic City" and "Project Japan", critical reviews of Junya Ishigami and Herzog &amp; de Meuron</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PORTFOLIO ================= -->
+<section class="page" id="p-portfolio">
+  <div class="wrap">
+    <div class="pf-top">
+      <div>
+        <h2>Portfolio</h2>
+        <p class="lead">Selected architecture and urban projects, 2021-2026.</p>
+      </div>
+      <a class="dl" href="portfolio/Aleksandr_Talipov_Portfolio.pdf" download>↓ Download full PDF</a>
+    </div>
+
+    <div class="viewer" id="viewer">
+      <img id="pfImgA" class="pf on" src="portfolio/p01.jpg" alt="Portfolio page">
+      <img id="pfImgB" class="pf" src="portfolio/p02.jpg" alt="">
+      <div class="arrows prev" id="aPrev"><span><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></span></div>
+      <div class="arrows next" id="aNext"><span><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span></div>
+    </div>
+    <div class="pf-bar">
+      <div id="pfCount">1 / 28</div>
+      <div class="pf-hint">click sides to flip · double-click center for fullscreen</div>
+      <button class="fs" id="fsBtn" type="button">⛶ FULLSCREEN</button>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section class="page" id="p-contact">
+  <div class="wrap">
+    <h2>Contact</h2>
+    <p class="lead">Let's talk about AI-native architecture, creator monetization, or building something new.</p>
+    <div class="sect">
+      <a class="cl" href="mailto:appleidsasha3@gmail.com"><small>EMAIL</small>appleidsasha3@gmail.com</a>
+      <a class="cl" href="https://www.linkedin.com/in/aleksander-talipov" target="_blank" rel="noopener"><small>LINKEDIN</small>linkedin.com/in/aleksander-talipov</a>
+      <a class="cl" href="tel:+79253461262"><small>PHONE</small>+7 (925) 346-12-62</a>
+      <a class="cl" href="#portfolio"><small>PORTFOLIO</small>View my portfolio →</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div>© 2026 ALEXANDER TALIPOV</div>
+  <div>ARCHITECT · ENTREPRENEUR · COLUMBIA UNIVERSITY</div>
+  <div>DESIGNED WITH CLAUDE</div>
+</footer>
+
+<script>
+(function(){
+  var PAGES = ['home','about','experience','education','activities','portfolio','contact'];
+  var buttons = document.querySelectorAll('#tabs button');
+
+  function show(id){
+    document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('on'); });
+    var el = document.getElementById('p-' + id);
+    if(el) el.classList.add('on');
+    buttons.forEach(function(b){ b.classList.toggle('on', b.dataset.p === id); });
+    if(location.hash !== '#' + id){
+      try { history.replaceState(null, '', '#' + id); } catch(e){}
+    }
+    window.scrollTo(0, 0);
+  }
+
+  buttons.forEach(function(b){
+    b.addEventListener('click', function(){ show(b.dataset.p); });
+  });
+  document.querySelectorAll('a[href^="#"]').forEach(function(a){
+    a.addEventListener('click', function(e){
+      var id = a.getAttribute('href').slice(1);
+      if(PAGES.indexOf(id) >= 0){ e.preventDefault(); show(id); }
+    });
+  });
+  var h = location.hash.slice(1);
+  if(PAGES.indexOf(h) >= 0) show(h);
+
+  /* ---------- nozomio-style ascii letters: dense glyphs + cursor field ---------- */
+  var COLS = 11, ROWS = 15, LGAP = 1, SS = 4, THRESH = 0.38, RADIUS = 5, IDLE = 4000;
+  var SYM = '!<>-_[]{}=+*^?#%&@0123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz';
+  var PUNCT = '.,:;~' + String.fromCharCode(39,96);
+  var NL = String.fromCharCode(10);
+  function rc(){ return SYM.charAt(Math.floor(Math.random() * SYM.length)); }
+  function rp(){ return PUNCT.charAt(Math.floor(Math.random() * PUNCT.length)); }
+
+  function rasterize(ch){
+    var cv = document.createElement('canvas');
+    cv.width = COLS * SS; cv.height = ROWS * SS;
+    var ctx = cv.getContext('2d', { willReadFrequently: true });
+    ctx.fillStyle = '#000';
+    ctx.font = "400 " + (ROWS * SS) + 'px "Archivo Black", "Arial Black", Arial, sans-serif';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(ch, cv.width / 2, cv.height / 2 + ROWS * SS * 0.05);
+    var data = ctx.getImageData(0, 0, cv.width, cv.height).data;
+    var cov = [];
+    for(var r = 0; r < ROWS; r++){
+      cov.push([]);
+      for(var c = 0; c < COLS; c++){
+        var s2 = 0, n2 = 0;
+        for(var sy = 0; sy < SS; sy++){
+          for(var sx = 0; sx < SS; sx++){
+            s2 += data[((r * SS + sy) * cv.width + (c * SS + sx)) * 4 + 3]; n2++;
+          }
+        }
+        cov[r].push(s2 / n2 / 255);
+      }
+    }
+    var grid = [];
+    for(var r2 = 0; r2 < ROWS; r2++){
+      var row = '';
+      for(var c2 = 0; c2 < COLS; c2++){
+        var v = cov[r2][c2];
+        row += v >= 0.75 ? '2' : (v >= 0.52 ? '1' : '0');
+      }
+      grid.push(row);
+    }
+    var cmin = COLS, cmax = -1;
+    for(var r3 = 0; r3 < ROWS; r3++){
+      for(var c3 = 0; c3 < COLS; c3++){
+        if(grid[r3].charAt(c3) !== '0'){
+          if(c3 < cmin) cmin = c3;
+          if(c3 > cmax) cmax = c3;
+        }
+      }
+    }
+    if(cmax >= cmin){
+      var cropped = [];
+      for(var r4 = 0; r4 < ROWS; r4++) cropped.push(grid[r4].substring(cmin, cmax + 1));
+      return cropped;
+    }
+    return grid;
+  }
+
+  var lines = [];
+  function buildLine(el){
+    var word = (el.getAttribute('data-word') || '').toUpperCase();
+    var letters = [];
+    for(var i = 0; i < word.length; i++) letters.push(rasterize(word[i]));
+    var matrix = [], cells = [];
+    for(var r = 0; r < ROWS; r++) matrix.push([]);
+    for(var li = 0; li < letters.length; li++){
+      for(var r2 = 0; r2 < ROWS; r2++){
+        var wdt = letters[li][r2].length;
+        for(var c2 = 0; c2 < wdt; c2++){
+          var kind = letters[li][r2].charAt(c2);
+        if(kind !== '0'){
+          matrix[r2].push(kind === '2' ? rc() : PUNCT.charAt(Math.floor(Math.random() * PUNCT.length)));
+          cells.push([r2, matrix[r2].length - 1, kind === '2' ? 0 : 1]);
+        } else matrix[r2].push(' ');
+        }
+        if(li < letters.length - 1) for(var g2 = 0; g2 < LGAP; g2++) matrix[r2].push(' ');
+      }
+    }
+    var pre = document.createElement('pre');
+    pre.textContent = matrix.map(function(rw){ return rw.join(''); }).join(NL);
+    el.appendChild(pre);
+    var probe = document.createElement('span');
+    probe.textContent = 'M';
+    probe.style.position = 'absolute';
+    probe.style.visibility = 'hidden';
+    pre.appendChild(probe);
+    var pw = probe.getBoundingClientRect().width || 7;
+    probe.remove();
+    var lh = parseFloat(getComputedStyle(pre).lineHeight);
+    return { el: el, pre: pre, matrix: matrix, cells: cells, chW: pw, rowH: lh || pw * 1.7 };
+  }
+
+  function buildAscii(){
+    document.querySelectorAll('.ascii-line').forEach(function(el){
+      lines.push(buildLine(el));
+    });
+  }
+  function startAscii(){
+    if(document.fonts && document.fonts.load){
+      document.fonts.load('400 64px "Archivo Black"').then(function(){ return document.fonts.load("800 64px Inter"); }).then(buildAscii, buildAscii);
+    } else buildAscii();
+  }
+  if(document.fonts && document.fonts.ready){ document.fonts.ready.then(startAscii); }
+  else startAscii();
+
+  var pointer = { x: 0, y: 0, inside: false, lastMove: 0 };
+  var rafId = null;
+  function paintLine(L){
+    L.pre.textContent = L.matrix.map(function(rw){ return rw.join(''); }).join(NL);
+  }
+  function loop(){
+    rafId = null;
+    if(!pointer.inside){ return; }
+    var active = (Date.now() - pointer.lastMove) < IDLE;
+    if(active){
+      lines.forEach(function(L){
+        var rect = L.pre.getBoundingClientRect();
+        if(pointer.x < rect.left || pointer.x > rect.right || pointer.y < rect.top || pointer.y > rect.bottom) return;
+        var cx = (pointer.x - rect.left) / L.chW;
+        var cy = (pointer.y - rect.top) / L.rowH;
+        var changed = false;
+        for(var i = 0; i < L.cells.length; i++){
+          var cl = L.cells[i];
+          var dx = (cl[1] + 0.5 - cx) * 0.62;
+          var dy = (cl[0] + 0.5 - cy);
+          var d = Math.sqrt(dx * dx + dy * dy);
+          if(d < RADIUS && Math.random() < 0.34 * (1 - d / RADIUS)){
+            L.matrix[cl[0]][cl[1]] = cl[2] === 0 ? rc() : rp();
+            changed = true;
+          }
+        }
+        if(changed) paintLine(L);
+      });
+    }
+    rafId = requestAnimationFrame(loop);
+  }
+  var hero = document.getElementById('heroName');
+  hero.addEventListener('pointermove', function(e){
+    pointer.x = e.clientX; pointer.y = e.clientY; pointer.lastMove = Date.now();
+    if(!pointer.inside){
+      pointer.inside = true;
+      if(!rafId) rafId = requestAnimationFrame(loop);
+    }
+  });
+  hero.addEventListener('pointerleave', function(){ pointer.inside = false; });
+  /* ---------- portfolio slider ---------- */
+  var N = 28, cur = 0;
+  var imgA = document.getElementById('pfImgA');
+  var imgB = document.getElementById('pfImgB');
+  var front = imgA, back = imgB;
+  var cnt = document.getElementById('pfCount');
+  function pad(n){ return (n < 10 ? '0' : '') + n; }
+  var loadToken = 0;
+  function showOn(el, src, token){
+    var swap = function(){
+      if(token !== loadToken) return;
+      front.classList.remove('on');
+      el.classList.add('on');
+      var t = front; front = el; back = t;
+    };
+    if(el.src.indexOf(src) >= 0){ swap(); return; }
+    el.src = src;
+    if(el.decode){ el.decode().then(swap, swap); } else swap();
+  }
+  function go(n){
+    cur = (n + N) % N;
+    cnt.textContent = (cur + 1) + ' / ' + N;
+    showOn(back, 'portfolio/p' + pad(cur + 1) + '.jpg', ++loadToken);
+    warm(cur + 2); warm(cur + 3);
+  }
+  function warm(n){
+    var k = ((n % N) + N) % N;
+    var w = new Image();
+    w.src = 'portfolio/p' + pad(k + 1) + '.jpg';
+    if(w.decode) w.decode().catch(function(){});
+  }
+  warm(2); warm(3);
+  document.getElementById('aPrev').addEventListener('click', function(){ go(cur - 1); });
+  document.getElementById('aNext').addEventListener('click', function(){ go(cur + 1); });
+  document.addEventListener('keydown', function(e){
+    if(!document.getElementById('p-portfolio').classList.contains('on')) return;
+    if(e.key === 'ArrowLeft') go(cur - 1);
+    if(e.key === 'ArrowRight') go(cur + 1);
+  });
+  var fsBtn = document.getElementById('fsBtn');
+  function isFs(){ return document.fullscreenElement === viewer || viewer.classList.contains('pfs'); }
+  function updFsBtn(){ fsBtn.textContent = isFs() ? '× EXIT FULLSCREEN' : '⛶ FULLSCREEN'; }
+  function openPfs(){
+    viewer.classList.add('pfs');
+    document.body.classList.add('lock');
+    updFsBtn();
+  }
+  function closePfs(){
+    viewer.classList.remove('pfs');
+    document.body.classList.remove('lock');
+    updFsBtn();
+  }
+  function toggleFs(){
+    if(document.fullscreenElement){ document.exitFullscreen(); return; }
+    if(viewer.classList.contains('pfs')){ closePfs(); return; }
+    if(viewer.requestFullscreen){
+      var pr = viewer.requestFullscreen();
+      if(pr && pr.catch) pr.catch(function(){ openPfs(); });
+      setTimeout(function(){ if(!document.fullscreenElement && !viewer.classList.contains('pfs')) openPfs(); }, 350);
+    } else openPfs();
+  }
+  fsBtn.addEventListener('click', toggleFs);
+  front.addEventListener('dblclick', toggleFs);
+  back.addEventListener('dblclick', toggleFs);
+  document.addEventListener('fullscreenchange', function(){
+    if(!document.fullscreenElement) closePfs();
+    updFsBtn();
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && viewer.classList.contains('pfs')) closePfs();
+  });
+
+  var x0 = null;
+  var viewer = document.getElementById('viewer');
+  viewer.addEventListener('touchstart', function(e){ x0 = e.touches[0].clientX; }, {passive:true});
+  viewer.addEventListener('touchend', function(e){
+    if(x0 === null) return;
+    var dx = e.changedTouches[0].clientX - x0;
+    if(Math.abs(dx) > 40) go(dx < 0 ? cur + 1 : cur - 1);
+    x0 = null;
+  }, {passive:true});
+})();
+</script>
+</body>
+</html>
