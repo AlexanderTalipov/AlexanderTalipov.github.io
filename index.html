@@ -639,7 +639,7 @@
     var pw = probe.getBoundingClientRect().width || 7;
     probe.remove();
     var lh = parseFloat(getComputedStyle(pre).lineHeight);
-    return { el: el, pre: pre, matrix: matrix, cells: cells, chW: pw, rowH: lh || pw * 1.7, text: pre.firstChild, rowLen: matrix[0].length };
+    return { el: el, pre: pre, matrix: matrix, cells: cells, chW: pw, rowH: lh || pw * 1.7 };
   }
 
   function buildAscii(){
@@ -668,12 +668,8 @@
       lines.forEach(function(L){
         var rect = L.pre.getBoundingClientRect();
         if(pointer.x < rect.left || pointer.x > rect.right || pointer.y < rect.top || pointer.y > rect.bottom) return;
-        var rng = document.createRange();
-        rng.setStart(L.text, 0); rng.setEnd(L.text, L.rowLen);
-        var r0 = rng.getBoundingClientRect();
-        if(!r0 || !r0.width) return;
-        var cx = (pointer.x - r0.left) * L.rowLen / r0.width;
-        var cy = (pointer.y - r0.top) / L.rowH;
+        var cx = (pointer.x - rect.left) / L.chW;
+        var cy = (pointer.y - rect.top) / L.rowH;
         var changed = false;
         for(var i = 0; i < L.cells.length; i++){
           var cl = L.cells[i];
