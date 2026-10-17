@@ -131,7 +131,10 @@
   .viewer:fullscreen{border:0}
   .viewer:fullscreen .pf{opacity:1}
   body.lock{overflow:hidden}
-  .viewer.pfs{position:fixed;inset:0;z-index:200;border:0;background:#000}
+  .viewer.pfs{position:fixed;top:0;left:0;width:100vw;height:100vh;height:100dvh;z-index:200;border:0;background:#000}
+  .fsx{display:none;position:absolute;top:14px;right:14px;z-index:10;width:46px;height:46px;border-radius:50%;
+      background:rgba(10,10,10,.72);border:1px solid #444;color:#fff;font-size:19px;line-height:1;cursor:pointer;font-family:inherit}
+  .viewer:fullscreen .fsx,.viewer.pfs .fsx{display:block}
   .viewer.pfs .pf{opacity:1}
 
   /* contact */
@@ -510,6 +513,7 @@
       <img id="pfImgA" class="pf on" src="portfolio/p01.jpg" alt="Portfolio page">
       <img id="pfImgB" class="pf" src="portfolio/p02.jpg" alt="">
       <div class="arrows prev" id="aPrev"><span><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></span></div>
+      <button class="fsx" id="fsX" type="button" aria-label="Exit fullscreen">&#10005;</button>
       <div class="arrows next" id="aNext"><span><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span></div>
     </div>
     <div class="pf-bar">
@@ -782,6 +786,9 @@
     } else openPfs();
   }
   fsBtn.addEventListener('click', toggleFs);
+  document.getElementById('fsX').addEventListener('click', function(){
+    if(document.fullscreenElement){ document.exitFullscreen(); } else { closePfs(); }
+  });
   front.addEventListener('dblclick', toggleFs);
   back.addEventListener('dblclick', toggleFs);
   document.addEventListener('fullscreenchange', function(){
