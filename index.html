@@ -108,6 +108,13 @@
   .pf-top{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-bottom:28px}
   .dl{display:inline-block;border:1px solid #3a3a3a;padding:11px 20px;font-size:12.5px;font-weight:600;letter-spacing:.04em;transition:.15s}
   .dl:hover{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+  .pwrap{position:relative}
+  .pmenu{display:none;position:absolute;top:calc(100% - 1px);left:0;right:0;z-index:40;background:#141414;border:1px solid var(--line)}
+  .pmenu.open{display:block}
+  .pmenu a{display:block;padding:14px 2px;font-size:15px;color:var(--ink);border-bottom:1px solid var(--line)}
+  .pmenu a:last-child{border-bottom:0}
+  .pmenu a:hover{background:#1e1e1e}
+  .chev{color:var(--mut);font-size:12px}
   .viewer{position:relative;border:1px solid var(--line);background:#000;height:min(76vh,860px)}
   .viewer .pf{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:0}
   .viewer .pf.on{opacity:1;z-index:2}
@@ -523,8 +530,13 @@
       <a class="cl" href="mailto:appleidsasha3@gmail.com"><small>EMAIL</small>appleidsasha3@gmail.com</a>
       <a class="cl" href="https://www.linkedin.com/in/aleksander-talipov" target="_blank" rel="noopener"><small>LINKEDIN</small>linkedin.com/in/aleksander-talipov</a>
       <a class="cl" href="https://x.com/mr_drawics" target="_blank" rel="noopener"><small>X (TWITTER)</small>x.com/mr_drawics</a>
-      <a class="cl" href="tel:+79253461262"><small>PHONE</small>+7 (925) 346-12-62</a>
-      <a class="cl" href="https://wa.me/79253461262" target="_blank" rel="noopener"><small>WHATSAPP</small>+7 (925) 346-12-62</a>
+      <div class="pwrap">
+        <a class="cl" id="phoneCl" href="tel:+79253461262"><small>PHONE</small>+7 (925) 346-12-62 <span class="chev">&#9662;</span></a>
+        <div class="pmenu" id="phoneMenu">
+          <a href="tel:+79253461262">Call +7 (925) 346-12-62</a>
+          <a href="https://wa.me/79253461262" target="_blank" rel="noopener">Open WhatsApp chat</a>
+        </div>
+      </div>
       <a class="cl" href="#portfolio"><small>PORTFOLIO</small>View my portfolio →</a>
     </div>
   </div>
@@ -791,6 +803,15 @@
     x0 = null;
   }, {passive:true});
 })();
+</script>
+<script>
+  (function(){
+    var pcl = document.getElementById('phoneCl');
+    var pmenu = document.getElementById('phoneMenu');
+    if(!pcl || !pmenu) return;
+    pcl.addEventListener('click', function(e){ e.preventDefault(); pmenu.classList.toggle('open'); });
+    document.addEventListener('click', function(e){ if(!pcl.contains(e.target)) pmenu.classList.remove('open'); });
+  })();
 </script>
 </body>
 </html>
