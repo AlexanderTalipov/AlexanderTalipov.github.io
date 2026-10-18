@@ -687,6 +687,7 @@
   else startAscii();
 
   var pointer = { x: 0, y: 0, inside: false, lastMove: 0 };
+  var touchLock = 0;
   var rafId = null;
   function paintLine(L){
     L.pre.textContent = L.matrix.map(function(rw){ return rw.join(''); }).join(NL);
@@ -694,6 +695,7 @@
   function loop(){
     rafId = null;
     if(!pointer.inside){ return; }
+    if(touchLock && Date.now() > touchLock){ touchLock = 0; pointer.inside = false; return; }
     var active = true;
     if(active){
       lines.forEach(function(L){
@@ -725,7 +727,13 @@
       if(!rafId) rafId = requestAnimationFrame(loop);
     }
   });
-  hero.addEventListener('pointerleave', function(){ pointer.inside = false; });
+  hero.addEventListener('pointerdown', function(e){
+    pointer.x = e.clientX; pointer.y = e.clientY; pointer.lastMove = Date.now();
+    pointer.inside = true;
+    touchLock = Date.now() + 6000;
+    if(!rafId) rafId = requestAnimationFrame(loop);
+  });
+  hero.addEventListener('pointerleave', function(){ if(!touchLock) pointer.inside = false; });
   /* ---------- portfolio slider ---------- */
   var N = 28, cur = 0;
   var imgA = document.getElementById('pfImgA');
