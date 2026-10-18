@@ -686,54 +686,65 @@
   if(document.fonts && document.fonts.ready){ document.fonts.ready.then(startAscii); }
   else startAscii();
 
-  var pointer = { x: 0, y: 0, inside: false, lastMove: 0 };
-  var touchLock = 0;
+  var pointer = { x: 0, y: 0, inside: false };
+  var bursts = [];
   var rafId = null;
   function paintLine(L){
     L.pre.textContent = L.matrix.map(function(rw){ return rw.join(''); }).join(NL);
   }
   function loop(){
     rafId = null;
-    if(!pointer.inside){ return; }
-    if(touchLock && Date.now() > touchLock){ touchLock = 0; pointer.inside = false; return; }
-    var active = true;
-    if(active){
-      lines.forEach(function(L){
-        var rect = L.pre.getBoundingClientRect();
-        if(pointer.x < rect.left || pointer.x > rect.right || pointer.y < rect.top || pointer.y > rect.bottom) return;
-        var cx = (pointer.x - rect.left) / L.chW;
-        var cy = (pointer.y - rect.top) / L.rowH;
-        var changed = false;
-        for(var i = 0; i < L.cells.length; i++){
-          var cl = L.cells[i];
-          var dx = (cl[1] + 0.5 - cx) * 0.62;
-          var dy = (cl[0] + 0.5 - cy);
+    var now = Date.now();
+    for(var bi = bursts.length - 1; bi >= 0; bi--){ if(bursts[bi].until < now) bursts.splice(bi, 1); }
+    if(!pointer.inside && !bursts.length){ return; }
+    lines.forEach(function(L){
+      var rect = L.pre.getBoundingClientRect();
+      var src = [];
+      if(pointer.inside && pointer.x >= rect.left && pointer.x <= rect.right && pointer.y >= rect.top && pointer.y <= rect.bottom){
+        src.push({ cx: (pointer.x - rect.left) / L.chW, cy: (pointer.y - rect.top) / L.rowH });
+      }
+      for(var bj = 0; bj < bursts.length; bj++){
+        var bb = bursts[bj];
+        if(bb.x >= rect.left && bb.x <= rect.right && bb.y >= rect.top && bb.y <= rect.bottom){
+          src.push({ cx: (bb.x - rect.left) / L.chW, cy: (bb.y - rect.top) / L.rowH });
+        }
+      }
+      if(!src.length) return;
+      var changed = false;
+      for(var i = 0; i < L.cells.length; i++){
+        var cl = L.cells[i];
+        var p = 0;
+        for(var si = 0; si < src.length; si++){
+          var dx = (cl[1] + 0.5 - src[si].cx) * 0.62;
+          var dy = (cl[0] + 0.5 - src[si].cy);
           var d = Math.sqrt(dx * dx + dy * dy);
-          if(d < RADIUS && Math.random() < 0.34 * (1 - d / RADIUS)){
-            L.matrix[cl[0]][cl[1]] = cl[2] === 0 ? rc() : rp();
-            changed = true;
+          if(d < RADIUS){
+            var pp = 0.34 * (1 - d / RADIUS);
+            if(pp > p) p = pp;
           }
         }
-        if(changed) paintLine(L);
-      });
-    }
+        if(p && Math.random() < p){
+          L.matrix[cl[0]][cl[1]] = cl[2] === 0 ? rc() : rp();
+          changed = true;
+        }
+      }
+      if(changed) paintLine(L);
+    });
     rafId = requestAnimationFrame(loop);
   }
   var hero = document.getElementById('heroName');
   hero.addEventListener('pointermove', function(e){
-    pointer.x = e.clientX; pointer.y = e.clientY; pointer.lastMove = Date.now();
+    pointer.x = e.clientX; pointer.y = e.clientY;
     if(!pointer.inside){
       pointer.inside = true;
       if(!rafId) rafId = requestAnimationFrame(loop);
     }
   });
   hero.addEventListener('pointerdown', function(e){
-    pointer.x = e.clientX; pointer.y = e.clientY; pointer.lastMove = Date.now();
-    pointer.inside = true;
-    touchLock = Date.now() + 6000;
+    bursts.push({ x: e.clientX, y: e.clientY, until: Date.now() + 6000 });
     if(!rafId) rafId = requestAnimationFrame(loop);
   });
-  hero.addEventListener('pointerleave', function(){ if(!touchLock) pointer.inside = false; });
+  hero.addEventListener('pointerleave', function(){ pointer.inside = false; });
   /* ---------- portfolio slider ---------- */
   var N = 28, cur = 0;
   var imgA = document.getElementById('pfImgA');
