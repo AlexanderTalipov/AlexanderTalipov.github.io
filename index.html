@@ -121,6 +121,8 @@
   .arrows{position:absolute;top:0;bottom:0;width:33%;display:flex;align-items:center;cursor:pointer;user-select:none;z-index:3}
   .arrows.prev{left:0;justify-content:flex-start;padding-left:14px}
   .arrows.next{right:0;justify-content:flex-end;padding-right:14px}
+  .arrows.prev span{margin-left:-72px}
+  .arrows.next span{margin-right:-72px}
   .arrows span{font-size:26px;color:#fff;background:rgba(10,10,10,.6);border:1px solid #333;border-radius:50%;
       width:44px;height:44px;display:flex;align-items:center;justify-content:center;transition:.15s}
   .arrows:hover span{background:#fff;color:#000}
@@ -157,6 +159,8 @@
     .hero{padding:60px 20px}
     nav{padding:14px 16px}
     .brand span{display:none}
+    .arrows.prev span{margin-left:0}
+    .arrows.next span{margin-right:0}
   }
 </style>
 </head>
