@@ -792,11 +792,13 @@
     viewer.classList.add('pfs');
     document.body.classList.add('lock');
     updFsBtn();
+    placeArrows();
   }
   function closePfs(){
     viewer.classList.remove('pfs');
     document.body.classList.remove('lock');
     updFsBtn();
+    placeArrows();
   }
   function toggleFs(){
     if(document.fullscreenElement){ document.exitFullscreen(); return; }
@@ -830,6 +832,20 @@
     if(Math.abs(dx) > 40) go(dx < 0 ? cur + 1 : cur - 1);
     x0 = null;
   }, {passive:true});
+
+  var PF_AR = 1280 / 907;
+  function placeArrows(){
+    var r = viewer.getBoundingClientRect();
+    if(r.width < 10) return;
+    var off = Math.max(0, (r.width - Math.min(r.width, r.height * PF_AR)) / 2);
+    var m = Math.max(4, Math.round(off / 2 - 22));
+    var sp = document.querySelector('#aPrev span'), sn = document.querySelector('#aNext span');
+    if(sp) sp.style.marginLeft = m + 'px';
+    if(sn) sn.style.marginRight = m + 'px';
+  }
+  window.addEventListener('resize', placeArrows);
+  document.addEventListener('fullscreenchange', placeArrows);
+  placeArrows();
 })();
 </script>
 <script>
