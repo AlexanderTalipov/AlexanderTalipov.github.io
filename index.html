@@ -116,6 +116,7 @@
   .pmenu a:last-child{border-bottom:0}
   .pmenu a:hover{background:#1e1e1e}
   .viewer{position:relative;border:1px solid var(--line);background:#000;height:min(76vh,860px)}
+  .pfbox{position:absolute;top:0;bottom:0;left:72px;right:72px}
   .viewer .pf{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:0}
   .viewer .pf.on{opacity:1;z-index:2}
   .arrows{position:absolute;top:0;bottom:0;width:33%;display:flex;align-items:center;cursor:pointer;user-select:none;z-index:3}
@@ -157,6 +158,7 @@
     .hero{padding:60px 20px}
     nav{padding:14px 16px}
     .brand span{display:none}
+    .pfbox{left:0;right:0}
   }
 </style>
 </head>
@@ -513,8 +515,10 @@
     </div>
 
     <div class="viewer" id="viewer">
-      <img id="pfImgA" class="pf on" src="portfolio/p01.jpg" alt="Portfolio page">
-      <img id="pfImgB" class="pf" src="portfolio/p02.jpg" alt="">
+      <div class="pfbox">
+        <img id="pfImgA" class="pf on" src="portfolio/p01.jpg" alt="Portfolio page">
+        <img id="pfImgB" class="pf" src="portfolio/p02.jpg" alt="">
+      </div>
       <div class="arrows prev" id="aPrev"><span><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></span></div>
       <button class="fsx" id="fsX" type="button" aria-label="Exit fullscreen">&#10005;</button>
       <div class="arrows next" id="aNext"><span><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span></div>
@@ -837,7 +841,9 @@
   function placeArrows(){
     var r = viewer.getBoundingClientRect();
     if(r.width < 10) return;
-    var off = Math.max(0, (r.width - Math.min(r.width, r.height * PF_AR)) / 2);
+    var pad = window.innerWidth <= 720 ? 0 : 72;
+    var imgW = Math.min(r.width - 2 * pad, r.height * PF_AR);
+    var off = Math.max(0, (r.width - imgW) / 2);
     var m = Math.max(4, Math.round(off / 2 - 22));
     var sp = document.querySelector('#aPrev span'), sn = document.querySelector('#aNext span');
     if(sp) sp.style.marginLeft = m + 'px';
